@@ -1,3 +1,6 @@
 library(tsda);
-acct_str <-readData('./data-raw/acct_revenue_structure.xlsx','excel');
-acct_str;
+file <-'./data-raw/acct_revenue_structure.xlsx';
+class(file) <-'excel';
+rs <- readData(file);
+rs;
+class(rs);
