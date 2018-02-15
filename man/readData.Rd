@@ -2,21 +2,19 @@
 % Please edit documentation in R/readData.R
 \name{readData}
 \alias{readData}
-\title{读取数据的通知格式函数}
+\title{定义readData的泛型}
 \usage{
-readData(file = "", format = "excel", pkg = "readxl")
+readData(file)
 }
 \arguments{
-\item{file}{输入文件名}
-
-\item{foramt}{选择excel等}
+\item{file}{文件名同时指定类别}
 }
 \value{
-返回结果
+数据框
 }
 \description{
-读取数据的通知格式函数
+定义readData的泛型
 }
 \examples{
-readData('./data/test.xls','excel','readxl');
+readData('fileExcel')
 }

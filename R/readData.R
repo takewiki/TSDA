@@ -1,22 +1,96 @@
-
-#' 读取数据的通知格式函数
+#' 定义readData的泛型
 #'
-#' @param foramt 选择excel等
-#' @param file   输入文件名
-#' @return  返回结果
+#' @param file 文件名同时指定类别
+#'
+#' @return 数据框
 #' @export
-#' @import readxl
-#' @examples readData('./data/test.xls','excel','readxl');
-readData <- function (file='',format='excel',pkg='readxl')
+#'
+#' @examples
+#' readData('fileExcel')
+readData <- function (file)
 {
+  UseMethod('readData');
+}
+#' 读取Excel文件
+#'
+#' @param file 文件名，class=excel.
+#' @import readxl
+#' @return data.frame.
+#' @export
+#'
+#' @examples
+#' readData(fileExcel);
+readData.excel <- function (file)
+{
+  dataset <- read_excel(file)
+  dataset <- as.data.frame(dataset);
+  return (dataset)
+}
 
-  if (format == 'excel' && pkg == 'readxl' && file != '')
-  {
-    rs<- read_excel(file);
-  }else{
-    rs <-'';
-    stop("请输入正确的文件格式",call. = F);
-  }
- return (rs);
-};
+#' 读取csv数据
+#'
+#' @param file 文件名,类型为csv的文件
+#'
+#' @return 返回数据框
+#' @export
+#' @import readr
+#' @examples
+#' readData(filecsv);
+readData.csv <- function (file)
+{
+  # library(readr)
+  dataset <- read_csv(file)
+  dataset <- as.data.frame(dataset);
+  return(dataset);
+}
+#' 读取spss数据
+#'
+#' @param file 文件为class =spss
+#' @import haven
+#' @return 返回数据框
+#' @export
+#'
+#' @examples
+#' readData(fileSpss);
+readData.spss <- function(file)
+{
+  #library(haven)
+  dataset <- read_sav(file)
+  dataset <- as.data.frame(dataset);
+  return(dataset);
+}
+#' 读取sas数据
+#'
+#' @param file 数据源，class=sas
+#'
+#' @return 返回数据框
+#' @export
+#'
+#' @examples
+#' readData(fileSAS);
+readData.sas <- function (file)
+{
+  #library(haven)
+  dataset <- read_sas(file);
+  dataset <-as.data.frame(dataset);
+  return(dataset);
+}
+
+#' 读取stata数据
+#'
+#' @param file 数据源为stata
+#' @import haven
+#' @return 返回数据框
+#' @export
+#'
+#' @examples
+#' readData(fileStata);
+readData.stata <- function (file)
+{
+  # library(haven)
+  dataset <- read_stata(file)
+  dataset <- as.data.frame(dataset);
+  return(dataset);
+}
+
 
