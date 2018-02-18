@@ -13,6 +13,7 @@ RoxygenNote: 6.0.1
 Collate: 
     'dateInput.R'
     'dateTime.R'
+    'excel.R'
     'getAcctData_L1.R'
     'getDateSeries.R'
     'getPLData.R'

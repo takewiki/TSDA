@@ -85,3 +85,33 @@ splitStr <- function (x,pattern){
   str_split(x,pattern);
 }
 
+#' 自动过滤符合条件的字符串,也称为字符串的子集或截取
+#'
+#' @param x 字符向量
+#' @param pattern 可以使用文本或表达式
+#'
+#' @return 返回符合条件的结果
+#' @export
+#' @import stringr
+#' @examples subsetStr(letters,'a');
+subsetStr <- function (x,pattern)
+{
+  str_subset(x,pattern);
+}
+
+#' 用于字符串的替代
+#'
+#' @param x 字符向量
+#' @param pattern 字符或正则表达式
+#' @param newStr 新的替代字符串
+#'
+#' @return
+#' @export
+#' @import stringr
+#' @examples replaceStr('abcd','c','f');
+replaceStr <- function (x,pattern,newStr)
+{
+  str_replace(x,pattern,newStr);
+}
+
+

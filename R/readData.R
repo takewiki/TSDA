@@ -4,7 +4,7 @@
 #'
 #' @return 数据框
 #' @export
-#'
+#' @include excel.R
 #' @examples
 #' readData('fileExcel')
 readData <- function (file)
@@ -92,5 +92,7 @@ readData.stata <- function (file)
   dataset <- as.data.frame(dataset);
   return(dataset);
 }
+
+
 
 

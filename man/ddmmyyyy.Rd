@@ -2,15 +2,21 @@
 % Please edit documentation in R/dateInput.R
 \name{ddmmyyyy}
 \alias{ddmmyyyy}
-\title{将输入字符为ddmmyyyy形式转化为标准的Date}
+\title{用于输入日月年格式的数据}
 \usage{
 ddmmyyyy(x, sep = "-")
 }
 \arguments{
-\item{x}{输入的向量}
+\item{x}{输入数据}
 
 \item{sep}{分隔符}
 }
+\value{
+反回标准Date数据
+}
 \description{
-将输入字符为ddmmyyyy形式转化为标准的Date
+用于输入日月年格式的数据
+}
+\examples{
+ddmmyyyy(01-02-2018);
 }

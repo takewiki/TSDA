@@ -9,6 +9,7 @@
 #' @export
 #' @import devtools
 #' @examples writeData(data,'R',T);
+
 writeData<- function (data,to='R',overwrite=F)
 {
   if (to == 'R')
@@ -18,4 +19,18 @@ writeData<- function (data,to='R',overwrite=F)
     stop('请填写适用的数据');
   }
 
+};
+#' 将数据写入到Excel
+#'
+#' @param data 数据框
+#' @param fileName 目标文件名
+#' @param sheetName 页签名
+#' @import openxlsx
+#' @return
+#' @export
+#'
+#' @examples writeData2Excel(letters,'text.xlsx','sheet1');
+writeData2Excel <- function (data,fileName,sheetName='sheet1')
+{
+   write.xlsx(x = data,file = fileName,sheetName=sheetName);
 };
