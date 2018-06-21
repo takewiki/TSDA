@@ -13,6 +13,9 @@ writeData2Excel(data, fileName, sheetName = "sheet1")
 
 \item{sheetName}{页签名}
 }
+\value{
+返顺值
+}
 \description{
 将数据写入到Excel
 }

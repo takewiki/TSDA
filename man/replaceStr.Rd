@@ -13,6 +13,9 @@ replaceStr(x, pattern, newStr)
 
 \item{newStr}{新的替代字符串}
 }
+\value{
+返回值
+}
 \description{
 用于字符串的替代
 }

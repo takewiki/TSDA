@@ -26,7 +26,7 @@ writeData<- function (data,to='R',overwrite=F)
 #' @param fileName 目标文件名
 #' @param sheetName 页签名
 #' @import openxlsx
-#' @return
+#' @return 返顺值
 #' @export
 #'
 #' @examples writeData2Excel(letters,'text.xlsx','sheet1');

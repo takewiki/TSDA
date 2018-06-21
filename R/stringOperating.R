@@ -105,7 +105,7 @@ subsetStr <- function (x,pattern)
 #' @param pattern 字符或正则表达式
 #' @param newStr 新的替代字符串
 #'
-#' @return
+#' @return 返回值
 #' @export
 #' @import stringr
 #' @examples replaceStr('abcd','c','f');

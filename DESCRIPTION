@@ -11,6 +11,10 @@ Encoding: UTF-8
 LazyData: true
 RoxygenNote: 6.0.1
 Collate: 
+    'decimal2Hex_color.R'
+    'CMYK.R'
+    'CMYK2RGB.R'
+    'RGB2CMYK.R'
     'dateInput.R'
     'dateTime.R'
     'excel.R'
@@ -20,7 +24,9 @@ Collate:
     'getTimeSeries.R'
     'huanBiCalc.R'
     'is.odd.R'
+    'is_all_true.R'
     'readData.R'
     'rowColEx.R'
     'stringOperating.R'
+    'value_if_na.R'
     'writeData.R'
