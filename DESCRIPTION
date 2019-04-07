@@ -17,6 +17,7 @@ Collate:
     '021-html.R'
     '022-xml.R'
     '023-json.R'
+    '024-webapi.R'
     '030-excel.R'
     '031-spss.R'
     '032-sas.R'
