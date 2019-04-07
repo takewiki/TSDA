@@ -37,3 +37,14 @@ print.dir_files <- function(object){
   cat(paste(object,collapse = '\n'));
 
 }
+
+#' 查看包中R文件中所有文件
+#'
+#' @return 返回值
+#' @export
+#'
+#' @examples R_files()
+R_files <- function(){
+  res <-dir_files('./R')
+  return(res)
+}
