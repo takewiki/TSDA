@@ -1,11 +1,12 @@
 Package: tsda
 Type: Package
-Title: What the Package Does (Title Case)
-Version: 0.1.0
-Author: Who wrote it
-Maintainer: The package maintainer <yourself@somewhere.net>
-Description: More about what it does (maybe more than one line)
-    Use four spaces when indenting paragraphs within the Description.
+Title: data access and driver interface in takewiki solutions
+Version: 0.1.1
+Author: hulilei
+Maintainer: hulilei <hulilei@takewiki.com.cn>
+Description: data access operations and data driver for ODBC
+    data source can be text,excel,sqlserver,orace,dbase,hadoop
+    and other web resource from s3,object storage form tencent and so on
 License: What license is it under?
 Encoding: UTF-8
 LazyData: true
