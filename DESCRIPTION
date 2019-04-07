@@ -10,8 +10,17 @@ Description: data access operations and data driver for ODBC
 License: What license is it under?
 Encoding: UTF-8
 LazyData: true
-RoxygenNote: 6.0.1
+RoxygenNote: 6.1.0
 Collate: 
+    '010-directory.R'
+    '020-text.R'
+    '021-html.R'
+    '022-xml.R'
+    '023-json.R'
+    '030-excel.R'
+    '031-spss.R'
+    '032-sas.R'
+    '033-stata.R'
     'decimal2Hex_color.R'
     'CMYK.R'
     'CMYK2RGB.R'
