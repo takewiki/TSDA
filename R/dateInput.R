@@ -1,5 +1,5 @@
 
-#' @import lubridate
+#' @importFrom lubridate ymd
 #' @export
 yyyymmdd <-function (x,sep='-')
 {

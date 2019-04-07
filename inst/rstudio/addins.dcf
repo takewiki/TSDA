@@ -1,0 +1,5 @@
+Name: 插入外部数据
+Description: 插入外部数据，放在inst/extdata下
+Binding: addin_inst_extdata
+Interactive: true
+

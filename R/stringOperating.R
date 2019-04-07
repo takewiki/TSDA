@@ -27,9 +27,14 @@ len <- function (x)
 #' @examples left(letters,1);
 left <- function (x,num_char=1){
   nmax <- max(len(x));
-  if (num_char >nmax)
+  if (is.na(num_char)){
+    ""
+  }else if(is.na(nmax)){
+    ""
+
+  }else if (num_char >= nmax)
   {
-    stop("输入的字符截取位数超过了字符的最大位度！")
+    ""
   }else{
     str_sub(x, 1, num_char);
   }

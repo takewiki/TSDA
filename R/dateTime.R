@@ -15,7 +15,7 @@ timeZoneNames <- function(){
 #'
 #' @return 返回
 #' @export
-#' @import lubridate
+#' @importFrom lubridate ymd_hms
 #' @examples
 #' datetimeInput("2010-12-13 15:30:30");
 datetimeInput <- function (x)
@@ -23,7 +23,7 @@ datetimeInput <- function (x)
   time <- ymd_hms(x);
   time
 };
-datetime<- datetimeInput;
+
 
 #' 将UTC时间使用本地时间进行显示，实际存储还是UTC时间
 #'
@@ -32,7 +32,7 @@ datetime<- datetimeInput;
 #'
 #' @return 显示当天的时间格式，存储保持不变
 #' @export
-#' @import lubridate
+#' @importFrom lubridate with_tz
 #'
 #' @examples
 #' datetime.LocalPrint(datetime('2018-02-16 12:31:47'),'PRC');
@@ -48,7 +48,7 @@ datetime.LocalPrint <- function(x,timeZone=Sys.timezone())
 #'
 #' @return 返回当地存储的日期数据，非utc
 #' @export
-#' @import lubridate
+#' @importFrom  lubridate force_tz
 #' @examples datetime.LocalInput('2018-12-31 12:21:22');
 datetime.LocalInput <-function (x,timeZone=Sys.timezone())
 {
