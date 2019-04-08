@@ -31,6 +31,7 @@ read_excelBook <- function(variables) {
 #' @param dir_files excel_files所在的目录
 #'
 #' @return 返回值
+#' @include 010-directory.R
 #' @export
 #'
 #' @examples
@@ -47,4 +48,29 @@ read_excelBooks <- function(dir_files) {
   res <- do.call("rbind",res);
   names(res) <- sheet_header;
   return(res);
+}
+
+#' 广汇数据处理后
+#'
+#' @param gh_download_dir 文件目录
+#'
+#' @return 返回值
+#' @export
+#'
+#' @examples read_excel_GH();
+read_excel_GH <-function(gh_download_dir='./data-raw/test'){
+
+  res <-read_excelBooks(dir_files = gh_download_dir);
+  header_name <-names(res);
+  header_selected <- header_name[c(2,4)];
+  res <-res[,header_selected];
+ #进行求和运算
+  res2 <-tapply(as.integer(res[,2]),res[,1],sum);
+  res_name <-names(res2);
+  res_count <-as.vector(res2);
+  res3 <- data.frame(res_name,res_count);
+  names(res3) <- header_selected
+  #View(res3)
+  openxlsx::write.xlsx(res3,paste('./广汇UV数据处理后_',Sys.Date(),'.xlsx',sep=''))
+
 }
