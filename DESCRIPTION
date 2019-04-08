@@ -33,3 +33,9 @@ Collate:
     '061-cassandra.R'
     '062-hbase.R'
     '063-mongodb.R'
+    'excel.R'
+    'merge_sheets.R'
+    'readData.R'
+    'writeData.R'
+Suggests: 
+    testthat
