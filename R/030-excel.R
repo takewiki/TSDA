@@ -71,6 +71,7 @@ read_excel_GH <-function(gh_download_dir='./data-raw/test'){
   res3 <- data.frame(res_name,res_count);
   names(res3) <- header_selected
   #View(res3)
-  openxlsx::write.xlsx(res3,paste('./广汇UV数据处理后_',Sys.Date(),'.xlsx',sep=''))
+  #openxlsx::write.xlsx(res3,paste('./广汇UV数据处理后_',Sys.Date(),'.xlsx',sep=''))
+  return(res3)
 
 }
