@@ -22,6 +22,7 @@ Collate:
     '031-spss.R'
     '032-sas.R'
     '033-stata.R'
+    '040-DBMS.R'
     '040-sqlserver.R'
     '041-oracledb.R'
     '042-sqlite.R'
