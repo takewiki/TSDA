@@ -68,8 +68,8 @@ read_excel_GH <-function(gh_download_dir='./data-raw/test'){
   res2 <-tapply(as.integer(res[,2]),res[,1],sum);
   res_name <-names(res2);
   res_count <-as.vector(res2);
-  res3 <- data.frame(res_name,res_count);
-  names(res3) <- header_selected
+  res3 <- data.frame(res_name,res_count,stringsAsFactors = F);
+  names(res3) <- c('fname','fuvcount')
   #View(res3)
   #openxlsx::write.xlsx(res3,paste('./广汇UV数据处理后_',Sys.Date(),'.xlsx',sep=''))
   return(res3)
