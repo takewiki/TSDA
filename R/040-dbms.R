@@ -41,3 +41,60 @@ sqlserver_jdbc_driver <- function(driver_location='/opt/sqljdbc_7.2/enu/mssql-jd
   res2 <- initialize(res1,driver_location=driver_location,os_type=os_type);
   return(res2)
 }
+
+#' 定义连接的通用函数
+#'
+#' @param x 名称对
+#' @param server_ip 服务器地址
+#' @param db_name 数据库名称
+#' @param username 用户名
+#' @param password  密码
+#'
+#' @return 返回值
+#' @export
+#'
+#' @examples conn();
+setGeneric("conn",
+           signature = "jdbc_driver",
+           function(jdbc_driver,server_ip,port,db_name,username,password) standardGeneric("conn"))
+
+#' 用于生成conn相应的sqlserver_jdbc_driver对应的连接信息
+#'
+#' @param jdbc_driver sqlserver_jdbc_driver.
+#'
+#' @return 返回值
+#' @import RJDBC
+#' @export
+#'
+#' @examples conn();
+setMethod("conn",
+          c("jdbc_driver" = "sqlserver_jdbc_driver"),
+          function(jdbc_driver,server_ip,port='1433',db_name,username,password){
+            #code here
+            sqlserver_driver <- JDBC(jdbc_driver@driver_name,jdbc_driver@driver_location);
+            sql_driver_prefix <-'jdbc:sqlserver://';
+            jdbc_str <-paste(sql_driver_prefix,server_ip,":",port,";databaseName=",db_name,sep="");
+
+            res <- dbConnect(sqlserver_driver, jdbc_str, username, password);
+            return(res);
+                      })
+
+
+#' 执行sql的查询语句
+#'
+#' @param conn 连接信息
+#' @param sql_str 语句
+#'
+#' @return 返回值
+#' @import RJDBC
+#' @export
+#'
+#' @examples sql_select();
+sql_select <- function(conn,sql_str) {
+  res <- dbGetQuery(conn,sql_str)
+  return(res)
+}
+
+
+
+
