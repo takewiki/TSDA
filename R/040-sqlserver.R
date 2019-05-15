@@ -91,8 +91,7 @@ select_gen_sqlserver <- function(table_name='T_GL_VOUCHER',
 #'
 #' @examples sql_conn_rd
 sql_conn_rd <- function(db_name='AIS20190427230019') {
-  rd_setting(db_name)
-
+  conn_demo_setting(db_name)
 }
 
 
