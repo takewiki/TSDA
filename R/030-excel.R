@@ -75,3 +75,41 @@ read_excel_GH <-function(gh_download_dir='./data-raw/test'){
   return(res3)
 
 }
+
+
+# 从Excel中读取数据----
+#' 从Excel中读取数据
+#'
+#' @param file 文件名
+#' @param sheet sheet
+#'
+#' @return 返回值
+#' @import readxl
+#' @export
+#'
+#' @examples getDataFromExcel
+getDataFromExcel <- function(file,sheet=1)
+{
+  res <- read_excel(file,sheet)
+  return(res)
+};
+
+# 将R对象写入到Excel文件中-----
+#' 将R对象写入到Excel文件中
+#'
+#' @param data R对象
+#' @param fileName  文件名
+#' @param sheetName  页签名
+#'
+#' @return 返回值
+#' @import openxlsx
+#' @export
+#'
+#' @examples writeDataToExcel();
+writeDataToExcel <- function (data,fileName,sheetName)
+{
+
+  #write.xlsx(x = data,file = fileName,sheetName = sheetName,row.names = FALSE,append = T,showNA = T);
+  write.xlsx(x = data,file = fileName,sheetName=sheetName);
+
+}
