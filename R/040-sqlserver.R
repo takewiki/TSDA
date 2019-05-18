@@ -82,6 +82,290 @@ select_gen_sqlserver <- function(table_name='T_GL_VOUCHER',
 
 
 
+
+#' 将字段列表进行处理
+#'
+#' @param fieldName_vec 字段列表
+#' @param fieldName_caption  字段标题
+#'
+#' @return 返回值
+#' @export
+#'
+#' @examples simpleFieldCombiner();
+#' simpleFieldCombiner(letters,LETTERS);
+#' simpleFieldCombiner(c('fnumber','fname'),c('物料代码','物料名称'));
+simpleFieldCombiner_sqlserver <-function(fieldName_vec,fieldName_caption=NULL){
+  if(is.null(fieldName_caption)){
+    fieldName_caption <- fieldName_vec;
+  }
+  res <-paste(" ",fieldName_vec,'as',fieldName_caption," ",sep = " ",collapse = ",");
+  return(res)
+}
+
+#' 将聚合字段列表
+#'
+#' @param fieldName_vec 字段列表
+#' @param fieldName_caption 字段标题
+#' @param agg_fun_vec 聚合函数
+#'
+#' @return 返回值
+#' @export
+#'
+#' @examples aggregateFieldCombiner();
+#' aggregateFieldCombiner(c('aa','bb'),c('物料数量','物料金额'),c('sum','sum'));
+#' aggregateFieldCombiner(c('aa','bb'),aggr_fun_vec = c('sum','sum'));
+aggregateFieldCombiner_sqlserver <- function(fieldName_vec=NULL,fieldName_caption=NULL,aggr_fun_vec=NULL)
+{
+  if(is.null(fieldName_vec)){
+    res <-NULL
+  }else{
+    if(is.null(fieldName_caption)){
+      fieldName_caption <- fieldName_vec;
+    }
+    res <-paste(" ",aggr_fun_vec,"(",fieldName_vec,")",' as ',fieldName_caption," ",sep = "",collapse = ",");
+    res <-paste(" , ",res,sep="");
+
+  }
+
+  return(res)
+}
+
+#' 确定分组字段
+#'
+#' @param fieldName_vec 分组字段列表
+#'
+#' @return 返回值
+#' @export
+#'
+#' @examples groupByCombiner_sqlserver();
+#' groupByCombiner_sqlserver(LETTERS);
+groupByCombiner_sqlserver <- function(fieldName_vec=NULL){
+  if (is.null(fieldName_vec)){
+    res <-NULL
+  }else{
+    res <-paste(" ",fieldName_vec," ",sep="",collapse = ",");
+  }
+
+  return(res);
+}
+
+
+
+#' 形成一个where子句
+#'
+#' @param fieldName_vec 字段列表
+#' @param comparerSig_vec  比例符>=<
+#' @param filterValue_vec 比例值
+#' @param comboCondition_logi_vec  and或者or最后一个逻辑不生效
+#'
+#' @return 返回值
+#' @export
+#'
+#' @examples  whereStatementCombiner();
+#' is.null(whereStatementCombiner());
+#' fieldName_vec <-c('FYEAR','FDATE');
+#' comparerSig_vec <-c('=','>=');
+#' filterValue_vec <-c("2018","'2018-10-02'");
+#' comboCondition_logi_vec <-c('and','and');
+#' whereStatementCombiner(fieldName_vec,comparerSig_vec,filterValue_vec,comboCondition_logi_vec);
+whereStatementCombiner_sqlserver <- function(fieldName_vec=NULL,comparerSig_vec=NULL,filterValue_vec=NULL,comboCondition_logi_vec=NULL){
+  if(is.null(fieldName_vec)){
+    res <-NULL
+  }else{
+    logi_len <- length(comboCondition_logi_vec);
+    comboCondition_logi_vec[logi_len] <- " ";
+
+    res <-paste(" ",fieldName_vec,comparerSig_vec,filterValue_vec,comboCondition_logi_vec,sep=" ",collapse = "");
+
+  }
+
+
+  return(res);
+
+
+}
+
+#' 处理order By子句
+#'
+#' @param fieldName_vec 字段列表
+#' @param asc_vec 排序向量
+#'
+#' @return 返回值
+#' @export
+#'
+#' @examples orderByCombiner();
+#' orderByCombiner();
+#' orderByCombiner(fieldName_vec = letters,asc_vec = rep(T,26));
+orderByCombiner_sqlserver <- function(fieldName_vec=NULL,asc_vec=NULL) {
+  if (is.null(fieldName_vec)){
+    res <-NULL
+  }else{
+    asc_str <- logical_as_ascs(asc_vec);
+   res <- paste(" ",fieldName_vec," ",asc_str," ",sep = "",collapse = ",")
+  }
+  return(res);
+
+}
+
+
+
+#' 用于sqlsql select 生成器
+#'
+#' @param fieldName_vec_simple 普通字段列表
+#' @param table_name  表名称
+#' @param fieldName_caption_simple 普通字段标题
+#' @param fieldName_vec_aggr 聚合字段列表
+#' @param fieldName_caption_aggr 字段字段列表
+#' @param fun_vec_aggr 聚合函数
+#' @param fieldName_vec_where  行过滤字段列表
+#' @param comparerSig_vec_where 行比较符
+#' @param filterValue_vec_where 行比值值
+#' @param comboCondition_logi_vec_where 多行连接
+#' @param fieldName_vec_groupBy 分组字段
+#' @param fieldName_vec_orderBy 排序字段列表
+#' @param asc_vec_orderBy  字段升降排序
+#'
+#' @return 返回值
+#' @export
+#'
+#' @examples select_engine_sqlserver();
+#' #test 01 只显示字段列表--------
+#' # select  FVOUCHERGROUPNO,FYEAR,FPERIOD,FBILLNO from T_GL_VOUCHER
+#' fieldName_vec_simple <-c('FVOUCHERGROUPNO','FYEAR','FPERIOD','FBILLNO');
+#' table_name ='T_GL_VOUCHER';
+#'simpleFieldCombiner_sqlserver(fieldName_vec_simple);
+#'
+#' test01 <- select_engine_sqlserver(fieldName_vec_simple =fieldName_vec_simple ,
+#'                                  table_name = table_name
+#' );
+#' test01;
+#' #test 02 显示字段列表及别名--------
+#' # select    FVOUCHERGROUPNO as 凭证字号  ,  FYEAR as 会计年度  ,  FPERIOD as 会计期间  ,
+#' # FBILLNO as 凭证号      from  T_GL_VOUCHER
+#'
+#'fieldName_vec_simple <-c('FVOUCHERGROUPNO','FYEAR','FPERIOD','FBILLNO');
+#' table_name ='T_GL_VOUCHER';
+#' fieldName_caption_simple <-c('凭证字号','会计年度','会计期间','凭证号');
+#'
+#'test02 <- select_engine_sqlserver(fieldName_vec_simple =fieldName_vec_simple ,
+#'                                  fieldName_caption_simple = fieldName_caption_simple,
+#'                                  table_name = table_name
+#');
+#'test02;
+#'#test 03 显示字段列表及别名,显示行过滤--------
+#'# select    FVOUCHERGROUPNO as 凭证字号  ,  FYEAR as 会计年度  ,
+#'# FPERIOD as 会计期间  ,  FBILLNO as 凭证号      from  T_GL_VOUCHER
+#'# where   FDATE = '2018-10-09' and
+#'# FVOUCHERGROUPID = 1 and  FACCOUNTBOOKID = 100032
+#'fieldName_vec_simple <-c('FVOUCHERGROUPNO','FYEAR','FPERIOD','FBILLNO');
+#'table_name ='T_GL_VOUCHER';
+#'fieldName_caption_simple <-c('凭证字号','会计年度','会计期间','凭证号');
+#'fieldName_vec_where = c('FDATE','FVOUCHERGROUPID','FACCOUNTBOOKID');
+#'comparerSig_vec_where = c('=','=','=');
+#'filterValue_vec_where = c("'2018-10-09'","1","100032");
+#'comboCondition_logi_vec_where = c('and','and','and');
+#'test03 <- select_engine_sqlserver(fieldName_vec_simple =fieldName_vec_simple ,
+#'                                  fieldName_vec_where = fieldName_vec_where,
+#'                                  comparerSig_vec_where = comparerSig_vec_where,
+#'                                  filterValue_vec_where = filterValue_vec_where,
+#'                                  comboCondition_logi_vec_where =comboCondition_logi_vec_where ,
+#'                                  fieldName_caption_simple = fieldName_caption_simple,
+#'                                  table_name = table_name
+#');
+#'test03;
+#'#test 04 显示字段列表及别名,显示行过滤,字段排序--------
+#'# select    FVOUCHERGROUPNO as 凭证字号  ,
+#'# FYEAR as 会计年度  ,  FPERIOD as 会计期间  ,
+#'# FBILLNO as 凭证号      from  T_GL_VOUCHER
+#'# where   FDATE = '2018-10-09' and  FVOUCHERGROUPID = 1
+#'# and  FACCOUNTBOOKID = 100032
+#'# order by  FVOUCHERGROUPNO asc , FBILLNO desc
+#'fieldName_vec_simple <-c('FVOUCHERGROUPNO','FYEAR','FPERIOD','FBILLNO');
+#'table_name ='T_GL_VOUCHER';
+#'fieldName_caption_simple <-c('凭证字号','会计年度','会计期间','凭证号');
+#'fieldName_vec_where = c('FDATE','FVOUCHERGROUPID','FACCOUNTBOOKID');
+#'comparerSig_vec_where = c('=','=','=');
+#'filterValue_vec_where = c("'2018-10-09'","1","100032");
+#'comboCondition_logi_vec_where = c('and','and','and');
+#'fieldName_vec_orderBy = c('FVOUCHERGROUPNO','FBILLNO')
+#'asc_vec_orderBy = c(T,F)
+#'test04 <- select_engine_sqlserver(fieldName_vec_simple =fieldName_vec_simple ,
+#'                                  fieldName_vec_orderBy = fieldName_vec_orderBy,
+#'                                  asc_vec_orderBy = asc_vec_orderBy,
+#'                                  fieldName_vec_where = fieldName_vec_where,
+#'                                  comparerSig_vec_where = comparerSig_vec_where,
+#'                                  filterValue_vec_where = filterValue_vec_where,
+#'                                  comboCondition_logi_vec_where =comboCondition_logi_vec_where ,
+#'                                  fieldName_caption_simple = fieldName_caption_simple,
+#'                                  table_name = table_name
+#');
+#'test04;
+#'test05 <-select_engine_sqlserver(fieldName_vec_simple = c('FVOUCHERGROUPID'),
+#'fieldName_vec_where = 'FVOUCHERGROUPID',
+#'comparerSig_vec_where = '<>',
+#'filterValue_vec_where = '1',
+#'comboCondition_logi_vec_where = 'and',
+#'fieldName_vec_groupBy = 'FVOUCHERGROUPID',
+#'fieldName_vec_orderBy = 'FVOUCHERGROUPID',
+#'asc_vec_orderBy = F,
+#'fun_vec_aggr = c('count','sum'),
+#'fieldName_vec_aggr = c("FBILLNO","FPRINTTIMES"),
+#'fieldName_caption_aggr =c("bill_count","sum_print"),
+#'table_name = 'T_GL_VOUCHER'
+#'
+#')
+#'test05;
+select_engine_sqlserver <-function(fieldName_vec_simple,
+                                   table_name,
+                                   fieldName_caption_simple=NULL,
+                                   fieldName_vec_aggr=NULL,
+                                   fieldName_caption_aggr=NULL,
+                                   fun_vec_aggr=NULL,
+                                   fieldName_vec_where=NULL,
+                                   comparerSig_vec_where=NULL,
+                                   filterValue_vec_where=NULL,
+                                   comboCondition_logi_vec_where=NULL,
+                                   fieldName_vec_groupBy=NULL,
+                                   fieldName_vec_orderBy=NULL,
+                                   asc_vec_orderBy=NULL
+){
+  simple_field_str <-simpleFieldCombiner_sqlserver(fieldName_vec = fieldName_vec_simple,
+                                                   fieldName_caption = fieldName_caption_simple
+                                                    );
+  aggr_field_str <- aggregateFieldCombiner_sqlserver(fieldName_vec = fieldName_vec_aggr,
+                                                     fieldName_caption = fieldName_caption_aggr,
+                                                     aggr_fun_vec = fun_vec_aggr);
+  where_str <- whereStatementCombiner_sqlserver(fieldName_vec = fieldName_vec_where,
+                                                comparerSig_vec = comparerSig_vec_where,
+                                                filterValue_vec = filterValue_vec_where,
+                                                comboCondition_logi_vec = comboCondition_logi_vec_where);
+  groupBy_str <- groupByCombiner_sqlserver(fieldName_vec = fieldName_vec_groupBy);
+  orderBy_str <-orderByCombiner_sqlserver(fieldName_vec = fieldName_vec_orderBy,
+                                          asc_vec = asc_vec_orderBy);
+
+ if(is.null(aggr_field_str)){
+   aggr_field_str <-" ";
+ }
+ if(is.null(where_str)){
+   where_str <- " "
+ }else{
+   where_str <-paste(' where ',where_str," ",sep="");
+ }
+ if(is.null(groupBy_str)){
+   groupBy_str <-" "
+ }else{
+   groupBy_str <- paste(" group by ",groupBy_str," ",sep="");
+ }
+ if(is.null(orderBy_str)){
+   orderBy_str <-" "
+ }else{
+   orderBy_str<-paste(" order by ",orderBy_str," ",sep="");
+ }
+  res <- paste('select ',simple_field_str,aggr_field_str," from ",table_name," ",where_str,groupBy_str,orderBy_str,sep=" ");
+  return(res)
+}
+
+
 #' 读取棱星数据库的配置信息
 #'
 #' @param db_name 数据库名称,其他信息已加密处理
@@ -93,7 +377,6 @@ select_gen_sqlserver <- function(table_name='T_GL_VOUCHER',
 sql_conn_rd <- function(db_name='AIS20190427230019') {
   conn_demo_setting(db_name)
 }
-
 
 
 

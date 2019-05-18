@@ -95,6 +95,116 @@ sql_select <- function(conn,sql_str) {
   return(res)
 }
 
+# 更新update数据------
+#' 更新update数据
+#'
+#' @param conn 连接信息
+#' @param sql_str sql信息
+#'
+#' @return 返回值
+#' @import RJDBC
+#' @export
+#'
+#' @examples sql_update();
+sql_update <- function(conn,sql_str) {
 
+  dbSendUpdate(conn,sql_str);
+
+}
+
+
+
+# 获取一个数据库中的所有表名-----
+#' 获取一个数据库中的所有表名
+#'
+#' @param conn 连接信息
+#'
+#' @return 返回值
+#' @import RJDBC
+#' @export
+#'
+#' @examples db_tableNames()
+db_tableNames <- function(conn) {
+  res <- dbListTables(conn);
+  return(res);
+
+}
+
+# 判断是否为新表-----
+#' 判断是否为新表
+#'
+#' @param conn 数据库连接
+#' @param table_name 数据库表名
+#'
+#' @return 返回值
+#' @import RJDBC
+#' @export
+#'
+#' @examples db_is_newTable();
+db_is_newTable <- function(conn,table_name) {
+
+   res <-dbExistsTable(conn,table_name);
+   res <- !res
+}
+
+# 将R对象写入到SQL_server表中-------
+#' 将R对象写入到SQL_server表中
+#'
+#' @param conn 连接信息
+#' @param table_name 表名
+#' @param r_object R对象表
+#' @param skip 是否跳过表名重复检查，默认为是，不需要重复性
+#'
+#' @return 返回T表示插入成功，F可能是表名重复等
+#' @import RJDBC
+#' @export
+#'
+#' @examples db_saveR2Table();
+db_writeTable <- function(conn,table_name,r_object,skip=FALSE){
+
+  if (skip == TRUE){
+    res<- dbWriteTable(conn, table_name, r_object)
+  }else{
+    if(db_is_newTable(conn,table_name)){
+      res<- dbWriteTable(conn, table_name, r_object)
+    }else{
+      res <-FALSE
+      # stop(paste('表名:',table_name,"已在数据库中存在，请使用insert语句处理!"),call. = F)
+    }
+  }
+
+  return(res)
+
+}
+# 读取整表数据------
+#' 读取整表数据
+#'
+#' @param conn 数据库连接
+#' @param table_name 表名
+#'
+#' @return 返回值
+#' @import RJDBC
+#' @export
+#'
+#' @examples db_readTable();
+db_readTable <- function(conn,table_name) {
+  res <- dbReadTable(conn, table_name)
+  return(res)
+
+
+}
+
+#' 删除数据库中的表结构
+#'
+#' @param conn 连接信息
+#' @param table_name 表名
+#'
+#' @return 返回值
+#' @export
+#'
+#' @examples db_dropTable()
+db_dropTable <- function(conn,table_name) {
+  dbRemoveTable(conn,table_name);
+}
 
 
