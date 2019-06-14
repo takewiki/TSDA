@@ -4,7 +4,7 @@
 \alias{db_writeTable}
 \title{将R对象写入到SQL_server表中}
 \usage{
-db_writeTable(conn, table_name, r_object, skip = FALSE)
+db_writeTable(conn, table_name, r_object, append = FALSE)
 }
 \arguments{
 \item{conn}{连接信息}

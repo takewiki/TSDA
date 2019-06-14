@@ -160,17 +160,12 @@ db_is_newTable <- function(conn,table_name) {
 #' @export
 #'
 #' @examples db_saveR2Table();
-db_writeTable <- function(conn,table_name,r_object,skip=FALSE){
+db_writeTable <- function(conn,table_name,r_object,append=FALSE){
 
-  if (skip == TRUE){
+  if (append == FALSE){
     res<- dbWriteTable(conn, table_name, r_object)
   }else{
-    if(db_is_newTable(conn,table_name)){
-      res<- dbWriteTable(conn, table_name, r_object)
-    }else{
-      res <-FALSE
-      # stop(paste('表名:',table_name,"已在数据库中存在，请使用insert语句处理!"),call. = F)
-    }
+    res<- dbWriteTable(conn, table_name, r_object,append=T, row.names=F, overwrite=F)
   }
 
   return(res)
