@@ -1,3 +1,22 @@
+
+#' 读取Excel数据到数据框
+#'
+#' @param file 数据文件名
+#'
+#' @return 返回值
+#' @import readxl
+#' @export
+#'
+#' @examples
+#' readExcelDf('.data-raw/txt.xlsx');
+#' 读取excel数据
+readExcelDf <- function(file) {
+
+  res<- read_excel(file);
+  res <- as.data.frame(res,stringsAsFactors=FALSE);
+  return(res);
+}
+
 #' 读取excel的默认第一个页签
 #'
 #' @param excel_file 文件名
