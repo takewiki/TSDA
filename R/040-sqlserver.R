@@ -379,5 +379,37 @@ sql_conn_rd <- function(db_name='AIS20190427230019') {
 }
 
 
+#' 设置通用的数据库连接
+#'
+#' @param ip 服务器地址
+#' @param port 服务器端口
+#' @param user_name  用户名
+#' @param password  密码
+#' @param db_name  数据库名称
+#'
+#' @return 返回值
+#' @import RJDBC
+#' @export
+#'
+#' @examples
+#' sql_conn_common()
+sql_conn_common <- function(ip='115.159.201.178',
+                            port=1433,
+                            user_name,
+                            password,
+                            db_name
+                            ){
+
+  drv <- JDBC("com.microsoft.sqlserver.jdbc.SQLServerDriver","/opt/jdbc/mssql-jdbc-7.2.2.jre8.jar")
+  con_str <- paste("jdbc:sqlserver://",ip,":",port,";databaseName=",db_name,sep="");
+  con <- dbConnect(drv, con_str, user_name, password)
+  return(con)
+
+}
+
+
+
+
+
 
 
