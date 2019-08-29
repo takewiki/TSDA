@@ -4,6 +4,15 @@ con <- dbConnect(drv, "jdbc:sqlserver://115.159.201.178:1433;databaseName=JH_201
 voucher <- dbGetQuery(con,'select * from T_GL_VOUCHER;')
 
 
+
+
+library(tsda);
+con <- sql_conn_common();
+voucher <- dbGetQuery(con,'select * from T_GL_VOUCHER;')
+
+
+
+
 class(voucher2);
 
 str(voucher2);

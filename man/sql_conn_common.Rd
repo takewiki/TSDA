@@ -4,8 +4,8 @@
 \alias{sql_conn_common}
 \title{设置通用的数据库连接}
 \usage{
-sql_conn_common(ip = "115.159.201.178", port = 1433, user_name,
-  password, db_name)
+sql_conn_common(ip = "115.159.201.178", port = 1433,
+  user_name = "sa", password = "Hoolilay889@", db_name = "JH_2018B")
 }
 \arguments{
 \item{ip}{服务器地址}

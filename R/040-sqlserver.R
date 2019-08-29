@@ -395,9 +395,9 @@ sql_conn_rd <- function(db_name='AIS20190427230019') {
 #' sql_conn_common()
 sql_conn_common <- function(ip='115.159.201.178',
                             port=1433,
-                            user_name,
-                            password,
-                            db_name
+                            user_name='sa',
+                            password='Hoolilay889@',
+                            db_name='JH_2018B'
                             ){
 
   drv <- JDBC("com.microsoft.sqlserver.jdbc.SQLServerDriver","/opt/jdbc/mssql-jdbc-7.2.2.jre8.jar")
