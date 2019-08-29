@@ -10,6 +10,8 @@ library(tsda);
 con <- sql_conn_common();
 voucher <- dbGetQuery(con,'select * from T_GL_VOUCHER;')
 
+class(voucher);
+
 
 
 
