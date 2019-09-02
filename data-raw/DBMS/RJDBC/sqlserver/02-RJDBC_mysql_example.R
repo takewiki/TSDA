@@ -18,5 +18,11 @@ con <- dbConnect(drv, "jdbc:mysql://118.190.205.117:3306/sendplan?useUnicode=tru
 brand <- dbGetQuery(con,' select * from brand;')
 
 
+library(RJDBC)
+
+con <- mysql_conn_pms();
+brand <- dbGetQuery(con,' select * from brand;')
+
+
 
 

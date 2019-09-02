@@ -23,3 +23,35 @@ mysql_conn_common <- function(ip='localhost',
   return(con)
 
 }
+
+
+#' 设置pms连接信息
+#'
+#' @return 返回值
+#'
+#' @examples
+#' pms_info()
+pms_info <- function(){
+  username <- 'admin';
+  password <-'1qaz2wsx';
+  res <-list(username,password);
+  return(res);
+}
+
+#' 设置pms的连接信息
+#'
+#' @return 返回值
+#' @import RJDBC
+#' @export
+#'
+#' @examples
+#' mysql_conn_pms();
+mysql_conn_pms <- function() {
+  info <- pms_info();
+  drv <- JDBC("com.mysql.cj.jdbc.Driver","/opt/jdbc/mysql/mysql-connector-java-8.0.16.jar",identifier.quote="`")
+  con <- dbConnect(drv, "jdbc:mysql://118.190.205.117:3306/sendplan?useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC", info$username, info$password)
+  return(con);
+
+}
+
+
