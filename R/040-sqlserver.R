@@ -79,6 +79,18 @@ select_gen_sqlserver <- function(table_name='T_GL_VOUCHER',
   }
 }
 
+#配置nsim系统数据
+#' 配置nsim的数据库设置
+#'
+#' @return 返回值
+#' @export
+#'
+#' @examples
+#' conn_nsim()
+conn_nsim <- function(){
+  res <-sql_conn_common(db_name = 'nsim');
+  return(res)
+}
 
 
 
