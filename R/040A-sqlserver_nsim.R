@@ -1,4 +1,4 @@
-#配置nsim系统数据
+#1. 配置nsim系统数据-----
 #' 配置nsim的数据库设置
 #'
 #' @return 返回值
@@ -11,6 +11,7 @@ conn_nsim <- function(){
   return(res)
 }
 
+# 2.辅助函数--------
 #' 将向量变成SQL字段名
 #'
 #' @param x 向量
@@ -22,6 +23,51 @@ conn_nsim <- function(){
 #' vector_as_sql_fieldNames();
 vector_as_sql_fieldNames <- function(x) {
   res <-paste(' ',x,' ',collapse = ',');
+  return(res)
+}
+#' 处理返回类型问题
+#'
+#' @param x  原始数据
+#' @param res_type 返回值类型
+#'
+#' @return 返回值
+#' @export
+#'
+#' @examples
+#' deal_res_type();
+deal_res_type <- function(x,res_type='vector'){
+  if (res_type == 'vector'){
+    res <- x;
+  }else if(res_type == 'sql'){
+    res <- vector_as_sql_fieldNames(x)
+  }else if (res_type == 'list'){
+    res <- tsdo::vect_as_list(x)
+  }else{
+    res <- x;
+  }
+  return(res);
+}
+# 3.表级操作区-------
+#' 读取表的内码最大值
+#'
+#' @param table_name  表名
+#' @param id_var 内码字段名
+#'
+#' @return 返回值
+#' @export
+#'
+#' @examples
+#' nsim_max_id();
+nsim_max_id <- function(table_name='test2',id_var='FInterId'){
+  conn <- conn_nsim();
+  sql_str <- paste("select max(",id_var,") from ",table_name," ; ",sep="");
+  res <- sql_select(conn,sql_str);
+  res <- res[1,1];
+  if(is.null(res)){
+    res <-0
+  }else{
+    res<- as.numeric(res)
+  }
   return(res)
 }
 
@@ -61,15 +107,21 @@ nsim_fieldNames <- function(table_name='test2',id_var=NULL,res_type='vector'){
 #'
 #' @param table_name  表名称
 #' @param id_var 内码字段名
+#' @param field_vars 指定需要查询的字段列表
 #'
 #' @return 返回值
 #' @export
 #'
 #' @examples
 #' nsim_read();
-nsim_read <- function(table_name = 'test2',id_var=NULL){
+nsim_read <- function(table_name = 'test2',id_var=NULL,field_vars=NULL){
   conn <- conn_nsim();
-  fieldNames <- nsim_fieldNames(table_name,id_var,'sql');
+  if(is.null(field_vars)){
+    fieldNames <- nsim_fieldNames(table_name,id_var,'sql');
+  }else{
+    fieldNames <- vector_as_sql_fieldNames(field_vars);
+  }
+
   sql_str <- paste("select  ",fieldNames," from ",table_name," ;",sep="");
   res <- sql_select(conn,sql_str);
   ncount <- nrow(res);
@@ -83,28 +135,6 @@ nsim_read <- function(table_name = 'test2',id_var=NULL){
 
 
 
-#' 读取表的内码最大值
-#'
-#' @param table_name  表名
-#' @param id_var 内码字段名
-#'
-#' @return 返回值
-#' @export
-#'
-#' @examples
-#' nsim_max_id();
-nsim_max_id <- function(table_name='test2',id_var='FInterId'){
-  conn <- conn_nsim();
-  sql_str <- paste("select max(",id_var,") from ",table_name," ; ",sep="");
-  res <- sql_select(conn,sql_str);
-  res <- res[1,1];
-  if(is.null(res)){
-    res <-0
-  }else{
-    res<- as.numeric(res)
-  }
-  return(res)
-}
 
 #' 将相同结构的数据写入到数据库中
 #'
@@ -148,3 +178,85 @@ nsim_save <- function(data,table_name='test2',id_var=NULL){
 
   return(res);
 }
+
+
+#4.字段列表区------
+# 4.01 通用字段---------
+#' 读取表中的字段
+#'
+#' @param table_name 表名
+#' @param field_name 字段名
+#' @param res_type 返回值类型
+#'
+#' @return 返回值
+#' @export
+#'
+#' @examples
+#' nsim_read_byField();
+nsim_read_byField <- function(table_name='test2',field_name='FName',res_type='vector'){
+  res <-nsim_read(table_name ,field_vars = field_name)
+  res <- res[ ,1,drop=TRUE];
+  res <- as.character(res);
+  # print(res);
+  res <-deal_res_type(res,res_type);
+  return(res)
+
+}
+#4.02 品牌字段处理区域-------
+#' 处理品牌字段信息
+#'
+#' @param lang 返回语言格式
+#' @param res_type 返回字段格式
+#'
+#' @return 返回值
+#' @export
+#'
+#' @examples
+#' nsim_brand_fieldNames()
+nsim_brand_fieldNames <-function(lang='en',res_type='vector'){
+  if(lang == 'en'){
+    res <-nsim_fieldNames('brand')
+  }else{
+    res<-c('品牌内码','品牌代码','品牌名称')
+
+  }
+  res <- deal_res_type(res,res_type);
+  return(res)
+}
+
+
+
+#' 获取字段名
+#'
+#' @param res_type 返回字段类型
+#'
+#' @return 返回值
+#' @export
+#'
+#' @examples
+#' nsim_brand_FName();
+#' nsim_brand_FName();
+#' nsim_brand_FName('list');
+nsim_brand_FName <- function(res_type='vector'){
+  res <-nsim_read_byField('brand','FName',res_type)
+  return(res)
+
+}
+
+#' 读取品牌中的数据类型
+#'
+#' @param res_type 返回值类型
+#'
+#' @return 返回值
+#' @export
+#'
+#' @examples
+#' nsim_brand_FNumber();
+#' nsim_brand_FNumber('list');
+nsim_brand_FNumber <- function(res_type='vector'){
+  res <-nsim_read_byField('brand','FNumber',res_type)
+  return(res)
+}
+
+
+
