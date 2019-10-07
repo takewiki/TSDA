@@ -258,5 +258,44 @@ nsim_brand_FNumber <- function(res_type='vector'){
   return(res)
 }
 
+#4.03语料数据处理-------
+#' 处理语料的字段信息
+#'
+#' @param lang 语言选择
+#' @param res_type 返回类型选择
+#'
+#' @return 返回值
+#' @export
+#'
+#' @examples
+#' nsim_im_raw_record_fieldNames();
+nsim_im_raw_record_fieldNames <-function(lang='en',res_type='vector'){
+  if (lang == 'en'){
+    res <- nsim_fieldNames('im_raw_record')
+  }else{
+    res<-c('语料内码','用户ID','日期时间','日志内容','日期','时间','品牌',
+           '是否需要合并','合并内码')
+  }
+  res <- deal_res_type(res,res_type);
+  return(res);
+}
 
+#' 处理原始语料的日志字段
+#'
+#' @param res_type 返回值类型
+#'
+#' @return 返回值
+#' @export
+#'
+#' @examples
+#' nsim_im_raw_record_FLog();
+nsim_im_raw_record_FLog <- function(res_type='vector'){
+  res <-nsim_read_byField('im_raw_record','FLog',res_type)
+  return(res)
+}
+
+
+# 5.0 行级数据处理--------
+
+# 6.0 统计数据处理-------
 
