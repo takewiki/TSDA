@@ -35,6 +35,7 @@ Collate:
     '061-cassandra.R'
     '062-hbase.R'
     '063-mongodb.R'
+    '40A-sqlserver_nsim.R'
     'excel.R'
     'readData.R'
     'writeData.R'
