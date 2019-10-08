@@ -66,6 +66,7 @@ nsim_max_id <- function(table_name='test2',id_var='FInterId'){
   if(is.null(res)){
     res <-0
   }else if(is.na(res)){
+    #fix the na error
     res <-0
   }else{
     res<- as.numeric(res)
