@@ -295,7 +295,107 @@ nsim_im_raw_record_FLog <- function(res_type='vector'){
 }
 
 
+#' 增加通用的品牌信息查询
+#'
+#' @param table_name  表名
+#' @param field_name  字段名
+#' @param brand 品牌
+#' @param unique 是否唯一
+#'
+#' @return 返回值
+#' @export
+#'
+#' @examples
+#' nsim_brand_table_query();
+nsim_brand_table_query <- function(table_name='qalist_raw',
+                                   field_name='FQuestionText',
+                                   brand = 'JBLH',
+                                   unique = FALSE){
+  brand <- paste("FBrand = '",brand,"'",sep="");
+  res <- nsim_read_where(table_name,field_vars = field_name,where = brand);
+  res <- res[ ,1,drop=TRUE];
+  if (unique == TRUE){
+    res <- unique(res)
+  }
+  return(res)
+
+}
+#' 提取品牌的文本信息
+#'
+#' @param brand 品牌
+#' @param unique 是否唯一
+#'
+#' @return 返回值
+#' @export
+#'
+#' @examples
+#' nsim_qalist_FQuestionText();
+nsim_qalist_FQuestionText <- function(brand = 'JBLH',unique=FALSE){
+  res <- nsim_brand_table_query(table_name = 'qalist_raw',
+                                field_name = 'FQuestionText',
+                                brand,unique
+
+                                )
+  return(res)
+
+}
+
+#' 处理QA中的answer问题
+#'
+#' @param brand 品牌
+#' @param unique 唯一性
+#'
+#' @return 返回值
+#' @export
+#'
+#' @examples
+#' nsim_qalist_FAnswerText();
+nsim_qalist_FAnswerText <- function(brand = 'JBLH',unique=FALSE){
+  res <- nsim_brand_table_query(table_name = 'qalist_raw',
+                                field_name = 'FAnswerText',
+                                brand,unique
+
+  )
+  return(res)
+
+}
+
 # 5.0 行级数据处理--------
+#' 处理语句读取问题
+#'
+#' @param table_name 表名
+#' @param id_var 内码
+#' @param field_vars  字段名
+#' @param where 条件
+#'
+#' @return 返回值
+#' @export
+#'
+#' @examples
+#' nsim_read_where();
+#' nsim_read_where('qalist_raw',field_vars = 'FQuestionText',where = "FBrand = 'JBLH'");
+nsim_read_where <- function(table_name = 'test2',
+                            id_var=NULL,
+                            field_vars=NULL,
+                            where=' fid =1'){
+  conn <- conn_nsim();
+  if(is.null(field_vars)){
+    fieldNames <- nsim_fieldNames(table_name,id_var,'sql');
+  }else{
+    fieldNames <- vector_as_sql_fieldNames(field_vars);
+  }
+
+  sql_str <- paste("select  ",fieldNames," from ",table_name," where ",where," ;",sep="");
+  res <- sql_select(conn,sql_str);
+  ncount <- nrow(res);
+  if (ncount >0){
+    res <- res
+  }else{
+    res <- NULL
+  }
+  return(res)
+}
+
 
 # 6.0 统计数据处理-------
 
