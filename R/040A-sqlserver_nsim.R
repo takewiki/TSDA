@@ -323,6 +323,32 @@ nsim_brand_table_query <- function(table_name='qalist_raw',
   return(res)
 
 }
+#' 处理表查询的问题
+#'
+#' @param table_name 表名称
+#' @param field_name 字段名
+#' @param brand 品牌
+#' @param unique 是否唯一
+#'
+#' @return 返回值
+#' @export
+#'
+#' @examples
+#' nsim_brand_table_query2();
+nsim_brand_table_query2 <- function(table_name='qalist_raw',
+                                   field_name='FQuestionText',
+                                   brand = 'JBLH',
+                                   unique = FALSE){
+  brand <- paste("FBrand = '",brand,"'",sep="");
+  res <- nsim_read_distinct(table_name,field_vars = field_name,where = brand,unique = unique
+                              );
+  res <- res[ ,1,drop=TRUE];
+  #if (unique == TRUE){
+  #  res <- unique(res)
+  #}
+  return(res)
+
+}
 #' 提取品牌的文本信息
 #'
 #' @param brand 品牌
@@ -343,6 +369,26 @@ nsim_qalist_FQuestionText <- function(brand = 'JBLH',unique=FALSE){
 
 }
 
+#' 处理问题字段2
+#'
+#' @param brand 品牌
+#' @param unique 是否唯一
+#'
+#' @return 返回值
+#' @export
+#'
+#' @examples
+#' nsim_qalist_FQuestionText2();
+nsim_qalist_FQuestionText2 <- function(brand = 'JBLH',unique=FALSE){
+  res <- nsim_brand_table_query2(table_name = 'qalist_raw',
+                                field_name = 'FQuestionText',
+                                brand,unique
+
+  )
+  return(res)
+
+}
+
 #' 处理QA中的answer问题
 #'
 #' @param brand 品牌
@@ -355,6 +401,25 @@ nsim_qalist_FQuestionText <- function(brand = 'JBLH',unique=FALSE){
 #' nsim_qalist_FAnswerText();
 nsim_qalist_FAnswerText <- function(brand = 'JBLH',unique=FALSE){
   res <- nsim_brand_table_query(table_name = 'qalist_raw',
+                                field_name = 'FAnswerText',
+                                brand,unique
+
+  )
+  return(res)
+
+}
+#' 处理回复字段2
+#'
+#' @param brand 品牌
+#' @param unique 是否回复
+#'
+#' @return 返回值
+#' @export
+#'
+#' @examples
+#' nsim_qalist_FAnswerText2();
+nsim_qalist_FAnswerText2 <- function(brand = 'JBLH',unique=FALSE){
+  res <- nsim_brand_table_query2(table_name = 'qalist_raw',
                                 field_name = 'FAnswerText',
                                 brand,unique
 
@@ -400,5 +465,45 @@ nsim_read_where <- function(table_name = 'test2',
 }
 
 
+
+#' 处理查询的唯一性问题
+#'
+#' @param table_name 表名
+#' @param id_var 内码
+#' @param field_vars 名称
+#' @param where 查询条件
+#' @param unique 是否已到
+#'
+#' @return 返回值
+#' @export
+#'
+#' @examples
+#' nsim_read_distinct();
+nsim_read_distinct <- function(table_name = 'test2',
+                            id_var=NULL,
+                            field_vars=NULL,
+                            where=' fid =1',
+                            unique=FALSE){
+  conn <- conn_nsim();
+  if(is.null(field_vars)){
+    fieldNames <- nsim_fieldNames(table_name,id_var,'sql');
+  }else{
+    fieldNames <- vector_as_sql_fieldNames(field_vars);
+  }
+  if (unique == TRUE){
+    str_unique <-" distinct "
+  }else{
+    str_unique <-" "
+  }
+  sql_str <- paste("select  ",str_unique,fieldNames," from ",table_name," where ",where," ;",sep="");
+  res <- sql_select(conn,sql_str);
+  ncount <- nrow(res);
+  if (ncount >0){
+    res <- res
+  }else{
+    res <- NULL
+  }
+  return(res)
+}
 # 6.0 统计数据处理-------
 
