@@ -428,6 +428,22 @@ nsim_qalist_FAnswerText2 <- function(brand = 'JBLH',unique=FALSE){
 
 }
 
+
+#4.04 问答ID---------
+
+#' 将问题进行ID化处理
+#'
+#' @return 返回值
+#' @export
+#'
+#' @examples
+#' nsim_vw_qalist_id();
+nsim_vw_qalist_id <-function(){
+  res <- nsim_read('vw_qalist_id');
+  res <- res[order(res$FSessionId), ];
+  return(res)
+}
+
 # 5.0 行级数据处理--------
 #' 处理语句读取问题
 #'
