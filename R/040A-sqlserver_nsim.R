@@ -444,6 +444,105 @@ nsim_vw_qalist_id <-function(){
   return(res)
 }
 
+#4.05处理分词-----
+
+#' 处理词汇查询
+#'
+#' @param brand 品牌
+#'
+#' @return 返回值
+#' @export
+#'
+#' @examples
+#' nsim_dict();
+nsim_dict <- function(brand='JBLH'){
+  str_brand <- paste(" FBrand = '",brand,"' ",sep="");
+ res <-nsim_read_where('dict',field_vars = c('FWord','FCategory'),
+                       where =str_brand )
+ return(res)
+}
+
+#' 处理到词汇
+#'
+#' @param brand 品牌
+#' @param unique 是否唯一
+#'
+#' @return 返回值
+#' @export
+#'
+#' @examples
+#'  nsim_dict_FWord()
+ nsim_dict_FWord <- function(brand = 'JBLH',unique=FALSE){
+
+   res <- nsim_brand_table_query2(table_name = 'dict',
+                                  field_name = 'FWord',
+                                  brand,unique
+
+   )
+   return(res)
+
+ }
+
+#' 读取分词的类别
+#'
+#' @param brand 品牌
+#' @param unique 唯一
+#'
+#' @return 返回值
+#' @export
+#'
+#' @examples
+#' nsim_dict_category();
+nsim_dict_category <- function(brand = 'JBLH',unique=TRUE){
+
+  res <- nsim_brand_table_query2(table_name = 'dict',
+                                 field_name = 'FCategory',
+                                 brand,unique
+
+  )
+  return(res)
+
+}
+
+#4.06  问题处理
+#' 查询问题及id信息
+#'
+#' @param brand 品牌
+#'
+#' @return 返回值
+#' @export
+#'
+#' @examples
+#' nsim_ques();
+nsim_ques <- function(brand = 'JBLH'){
+ conn <- conn_nsim();
+ sql <-paste("select FQuestionId,FQuestion from item_question
+             where FBrand = '",brand," '
+             order by FQuestionId ", sep="")
+ res <- sql_select(conn,sql)
+  return(res);
+
+}
+
+#' 处理答案的读取问题
+#'
+#' @param brand  品牌
+#'
+#' @return 返回值
+#' @export
+#'
+#' @examples
+#' nsim_answ();
+nsim_answ <-function(brand = 'JBLH'){
+  conn <- conn_nsim();
+  sql <-paste("select FAnswerId,FAnswer from item_answer
+             where FBrand = '",brand," '
+             order by FAnswerId ", sep="")
+  res <- sql_select(conn,sql)
+  return(res);
+
+}
+
 # 5.0 行级数据处理--------
 #' 处理语句读取问题
 #'
@@ -523,3 +622,250 @@ nsim_read_distinct <- function(table_name = 'test2',
 }
 # 6.0 统计数据处理-------
 
+#' 处理问题分类
+#'
+#' @param brand 品牌
+#'
+#' @return 返回值
+#' @export
+#'
+#' @examples
+#' nsim_ques_seg();
+nsim_ques_seg <- function(brand = 'JBLH'){
+  library(Rwordseg);
+  data <- nsim_dict_FWord();
+  Rwordseg::insertWords(data);
+  #加入品牌信息
+  data_ques <- nsim_ques(brand);
+  ques_id <-as.character(data_ques$FQuestionId);
+  ques_txt <-data_ques$FQuestion;
+  ques_seg <-Rwordseg::segmentCN(ques_txt,nosymbol = T)
+  names(ques_seg) <- ques_id;
+  seg_count <- length(ques_seg);
+  res <- tsdo::list_init(seg_count);
+  for ( i in 1:seg_count){
+    item <- ques_seg[[i]];
+    #每个元素的数量
+    item_count <- length(item);
+    item_name <- ques_id[i];
+    FQuestionId <- rep(item_name,item_count);
+    FEntryId <-1:item_count;
+    FSegment <- item;
+    FNSOwn <- rep(0,item_count);
+    item_table <-data.frame(FQuestionId,FEntryId,FSegment,FNSOwn,stringsAsFactors = F)
+    res[[i]] <- item_table
+
+  }
+  res<-do.call('rbind',res);
+  nsim_save(res,'ques_segment');
+  #更新标志----
+  sql_update(conn_nsim()," update  a set a.FNSOwn = 1  from ques_segment a
+inner join dict b
+on a.FSegment = b.FWord
+")
+  #res;
+  #
+
+}
+
+#' 处理相应的分组分类数据
+#'
+#' @return 返回值
+#' @export
+#'
+#' @examples
+#' nsim_vw_ques_segment();
+nsim_vw_ques_segment <- function(){
+  conn <- conn_nsim();
+  sql <-"select FQuestionId,FCategory  from  vw_ques_segment
+order by FQuestionId,FCategory ;"
+  res <- sql_select(conn,sql)
+  return(res)
+}
+
+
+
+#' 处理将数据进行模板化处理
+#'
+#' @return 返回值
+#' @import tsdo
+#' @export
+#'
+#' @examples
+#' nsim_ques_tpl_save();
+nsim_ques_tpl_save <- function(){
+  data <- nsim_vw_ques_segment();
+  res <- split(data$FCategory,data$FQuestionId);
+  res <- lapply(res, vect_as_long_string)
+  res <- unlist(res);
+  FQuestionId <-names(res);
+  FQuesTpl <-res
+  res <- data.frame(FQuestionId,FQuesTpl,stringsAsFactors = F)
+  nsim_save(res,'ques_template')
+
+}
+
+#' 处理数据按||合并的问题
+#'
+#' @param x  向量
+#' @param group  分量
+#'
+#' @return 返回数据框
+#' @import tsdo
+#' @export
+#'
+#' @examples
+#' nsim_split_combine();
+nsim_split_combine <- function(x,group){
+  res <-split(x,group);
+  res <- lapply(res, vect_as_dbl_equal)
+  res <- unlist(res);
+  FGroup <-names(res);
+  FData <-res
+  res <- data.frame(FGroup,FData,stringsAsFactors = F)
+  return(res)
+
+}
+
+#' 读取问题模板的计数数据
+#'
+#' @return 返回值
+#' @export
+#'
+#' @examples
+#' nsim_ques_template_count();
+nsim_ques_template_count <- function(){
+  conn <- conn_nsim();
+  sql <-"select FQuesTpl,FQuestionId,FQuesCount from vw_ques_template_count
+order by FQuesTpl,FQuesCount desc";
+  res <- sql_select(conn,sql);
+  return(res)
+}
+
+
+#' 处理答案的标签个数
+#'
+#' @return 返回值
+#' @export
+#'
+#' @examples
+#' nsim_answ_template_count()
+nsim_answ_template_count <- function(){
+  conn <- conn_nsim();
+  sql <-"select FQuesTpl,FAnswerId,FAnswerCount from vw_answ_template_count
+order by FQuesTpl,FAnswerCount desc"
+  res <- sql_select(conn,sql);
+  return(res)
+}
+
+#' Title处理数据取TOP1
+#'
+#' @param data 数据
+#'
+#' @return 返回值
+#' @export
+#'
+#' @examples
+#' nsim_top1();
+nsim_top1 <-function(data){
+  ncount <-nrow(data);
+  data$FStandard <- rep(0,ncount);
+  data[1,'FStandard'] <-1;
+  return(data)
+}
+
+#' 针对问题进行标准化处理
+#'
+#' @return 返顺值
+#' @export
+#'
+#' @examples
+#' nsim_ques_standardize();
+nsim_ques_standardize <- function(){
+  data <-nsim_ques_template_count();
+  res <- split(data,data$FQuesTpl);
+  names(res) <-NULL
+  #res;
+  #head(res,3);
+
+  res2 <-lapply(res,nsim_top1)
+
+  res <- do.call('rbind',res2);
+  rownames(res) <-NULL
+  res$FQuesCount[is.na(res$FQuesCount)] <-0;
+  # View(res);
+ # lapply(res, unique);
+
+  nsim_save(res,'ques_standardize');
+  #return(res)
+}
+
+#' 处理答案标准化
+#'
+#' @return 返回值
+#' @export
+#'
+#' @examples
+#' nsim_answ_standardize();
+nsim_answ_standardize <- function(){
+  data <-nsim_answ_template_count();
+  res <- split(data,data$FQuesTpl);
+  names(res) <-NULL
+  #res;
+  #head(res,3);
+
+  res2 <-lapply(res,nsim_top1)
+
+  res <- do.call('rbind',res2);
+  rownames(res) <-NULL
+  res$FAnswerCount[is.na(res$FAnswerCount)] <-0;
+  # View(res);
+  # lapply(res, unique);
+
+  nsim_save(res,'answ_standardize');
+  #return(res)
+}
+
+
+#' 处理相类型问题
+#'
+#' @return 返回值
+#' @export
+#'
+#' @examples
+#' nsim_ques_like();
+nsim_ques_like <- function(){
+  conn <- conn_nsim();
+  sql <-"select FQuesTpl,FQuestion from ques_like
+order by fquesTpl";
+  res <- sql_select(conn,sql);
+  res2 <- nsim_split_combine(res$FQuestion,res$FQuesTpl);
+  rownames(res2) <-NULL
+  names(res2) <-c('FQuesTpl','FQuestion')
+ # max(nchar(res$FQuestion))
+ # max(nchar(res$FQuesTpl))
+  nsim_save(res2,'ques_like_txt')
+  #View(res2);
+}
+
+
+#' 处理相似答案
+#'
+#' @return 返回值
+#' @export
+#'
+#' @examples
+#' nsim_answ_like();
+nsim_answ_like <- function(){
+  conn <- conn_nsim();
+  sql <-"select FQuesTpl,FAnswer from answ_like_txt
+order by FQuesTpl";
+  res <- sql_select(conn,sql);
+  res2 <- nsim_split_combine(res$FAnswer,res$FQuesTpl);
+  rownames(res2) <-NULL
+  names(res2) <-c('FQuesTpl','FAnswer')
+  # max(nchar(res$FQuestion))
+  # max(nchar(res$FQuesTpl))
+  nsim_save(res2,'answ_like_txt2')
+  #View(res2);
+}
