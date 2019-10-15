@@ -869,3 +869,117 @@ order by FQuesTpl";
   nsim_save(res2,'answ_like_txt2')
   #View(res2);
 }
+
+# 创建nsim_version---
+#' 创建新的版本
+#'
+#' @param module 模块
+#' @param from 开始
+#' @param to 结束
+#' @param prefix 前缀
+#' @param brand  品牌
+#'
+#' @return 返顺值
+#' @export
+#'
+#' @examples
+#' nsim_version_create();
+#' nsim_version_create('nsdict');
+#' nsim_version_create('nsbl',1L,10000L);
+nsim_version_create <- function(brand='JBLH',module='nsbl',from=1L,to=1000L,prefix='V'){
+  # module='nsbl'
+  # from=1L
+  # to=1000L
+  # prefix='V'
+  FVersionId <- from:to;
+  ncount <- length(FVersionId);
+  FVersionTxt <- paste(prefix,FVersionId,sep = "");
+  FBrand <- rep(brand,ncount);
+  FType <- rep(module,ncount);
+  FCurrentVersion<-rep(0L,ncount);
+  FVersionNext <- from:to +1L;
+  FNextVersion <-paste(prefix,FVersionNext,sep = "");
+  res <- data.frame(FVersionId,FVersionTxt,FBrand,FType,FCurrentVersion,FNextVersion,
+                    stringsAsFactors = F)
+  #View(res)
+  #str(res)
+  nsim_save(res,'nsim_version');
+
+}
+
+#' 获取品牌模块的版本
+#'
+#' @param brand 品牌
+#' @param module 模块
+#'
+#' @return 返回值
+#' @export
+#'
+#' @examples
+#' nsim_version_getCurrentVersion();
+nsim_version_getCurrentVersion<- function(brand='JBLH',module='nsbl'){
+  sql <- paste("select FVersionTxt  from nsim_version
+  WHERE  FBrand = '",brand,"'  and
+  FTYPE='",module,"' and FCurrentVersion=1",sep="")
+  conn <- conn_nsim();
+  data <- sql_select(conn,sql);
+  if(nrow(data) == 0){
+    res <-""
+  }else{
+    res<-data$FVersionTxt[1]
+  }
+  return(res)
+
+
+}
+
+#' 获取品牌模块的下一个版本，用于程序处理
+#'
+#' @param brand 品牌
+#' @param module 模块
+#'
+#' @return 返回值
+#' @export
+#'
+#' @examples
+#' nsim_version_getNextVersion();
+nsim_version_getNextVersion<- function(brand='JBLH',module='nsbl'){
+  sql <- paste("select FNextVersion  from nsim_version
+  WHERE  FBrand = '",brand,"'  and
+  FTYPE='",module,"' and FCurrentVersion=1",sep="")
+  conn <- conn_nsim();
+  data <- sql_select(conn,sql);
+  if(nrow(data) == 0){
+    res <-"V1"
+  }else{
+    res<-data$FNextVersion[1]
+  }
+  return(res)
+
+
+}
+
+#' 设置品牌模块的版本
+#'
+#' @param brand 品牌
+#' @param module 模块
+#' @param version 版本
+#'
+#' @return 无
+#' @export
+#'
+#' @examples
+#' nsim_version_setCurrentVersion();
+nsim_version_setCurrentVersion<- function(brand='JBLH',module='nsbl',version){
+  sql <- paste("update nsim_version set  FCurrentVersion=1
+WHERE  FBrand = '",brand,"'  and
+FTYPE='",module,"' and FVersionTxt='",version,"'",sep="");
+  conn<- conn_nsim();
+  sql_update(conn,sql);
+  sql2 <- paste("update nsim_version set  FCurrentVersion=0
+WHERE  FBrand = '",brand,"'  and
+FTYPE='",module,"' and FVersionTxt<>'",version,"'",sep="");
+  sql_update(conn,sql2);
+
+}
+
