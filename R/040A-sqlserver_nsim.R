@@ -983,3 +983,23 @@ FTYPE='",module,"' and FVersionTxt<>'",version,"'",sep="");
 
 }
 
+
+
+#' 读取知识库模板信息
+#'
+#' @return 返回值
+#' @export
+#'
+#' @examples
+#' nsim_data_tpl();
+nsim_data_tpl <- function(){
+  file <- system.file('extdata/知识点导入模板.xlsx',package = 'tsda');
+  data_tpl <- read_excel(file,
+                         col_names = FALSE)
+  data_tpl <- tbl_as_df(data_tpl);
+  data_tpl <- data_tpl[1:2,];
+  col_count <- ncol(data_tpl);
+  col_nickName <-LETTERS[1:col_count];
+  names(data_tpl) <- col_nickName;
+  return(data_tpl)
+}
