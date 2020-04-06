@@ -4,13 +4,8 @@
 \alias{nsim_version_create}
 \title{创建新的版本}
 \usage{
-nsim_version_create(
-  brand = "JBLH",
-  module = "nsbl",
-  from = 1L,
-  to = 1000L,
-  prefix = "V"
-)
+nsim_version_create(brand = "JBLH", module = "nsbl", from = 1L,
+  to = 1000L, prefix = "V")
 }
 \arguments{
 \item{brand}{品牌}

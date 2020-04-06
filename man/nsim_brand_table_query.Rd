@@ -4,12 +4,8 @@
 \alias{nsim_brand_table_query}
 \title{增加通用的品牌信息查询}
 \usage{
-nsim_brand_table_query(
-  table_name = "qalist_raw",
-  field_name = "FQuestionText",
-  brand = "JBLH",
-  unique = FALSE
-)
+nsim_brand_table_query(table_name = "qalist_raw",
+  field_name = "FQuestionText", brand = "JBLH", unique = FALSE)
 }
 \arguments{
 \item{table_name}{表名}

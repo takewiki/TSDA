@@ -4,13 +4,9 @@
 \alias{select_gen_sqlserver}
 \title{定义sqlserver的语句自动生成函数}
 \usage{
-select_gen_sqlserver(
-  table_name = "T_GL_VOUCHER",
-  col_vec = c("FDATE", "FYEAR", "FPERIOD", "FBILLNO"),
-  row_where_expr = NULL,
-  order_vec = NULL,
-  order_asc_logical = NULL
-)
+select_gen_sqlserver(table_name = "T_GL_VOUCHER", col_vec = c("FDATE",
+  "FYEAR", "FPERIOD", "FBILLNO"), row_where_expr = NULL,
+  order_vec = NULL, order_asc_logical = NULL)
 }
 \arguments{
 \item{table_name}{表名称}

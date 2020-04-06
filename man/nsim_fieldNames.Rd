@@ -4,7 +4,8 @@
 \alias{nsim_fieldNames}
 \title{获取表的字段名向量}
 \usage{
-nsim_fieldNames(table_name = "test2", id_var = NULL, res_type = "vector")
+nsim_fieldNames(table_name = "test2", id_var = NULL,
+  res_type = "vector")
 }
 \arguments{
 \item{table_name}{表名}

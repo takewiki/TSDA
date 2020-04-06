@@ -499,4 +499,24 @@ conn_rds <- function(db_name='test') {
 
 
 
+#' 查询指定表的字段类型
+#'
+#' @param conn 连接信息
+#' @param table_name 表名
+#'
+#' @return 返回数据库
+#' @export
+#'
+#' @examples
+#' sql_fieldInfo()
+sql_fieldInfo <- function(conn=conn_rds(),table_name='books')
+{
+  sql <- paste0("select a.name as FFieldName,b.name as FTypeName from sys.columns  a
+inner join sys.types b
+on a.system_type_id = b.system_type_id
 
+where a.object_id=object_id('",table_name,"') ")
+  print(sql)
+  res <- sql_select(conn,sql)
+  return(res)
+}

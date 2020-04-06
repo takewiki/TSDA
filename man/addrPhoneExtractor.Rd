@@ -4,7 +4,8 @@
 \alias{addrPhoneExtractor}
 \title{提供文本中的电话及地址信息}
 \usage{
-addrPhoneExtractor(file = "~/pkgs/tsda/data-raw/src_data/addrPhone_data.xlsx")
+
+  addrPhoneExtractor(file = "~/pkgs/tsda/data-raw/src_data/addrPhone_data.xlsx")
 }
 \arguments{
 \item{file}{录入Excel文件名}
