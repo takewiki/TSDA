@@ -4,9 +4,12 @@
 \alias{whereStatementCombiner_sqlserver}
 \title{形成一个where子句}
 \usage{
-whereStatementCombiner_sqlserver(fieldName_vec = NULL,
-  comparerSig_vec = NULL, filterValue_vec = NULL,
-  comboCondition_logi_vec = NULL)
+whereStatementCombiner_sqlserver(
+  fieldName_vec = NULL,
+  comparerSig_vec = NULL,
+  filterValue_vec = NULL,
+  comboCondition_logi_vec = NULL
+)
 }
 \arguments{
 \item{fieldName_vec}{字段列表}

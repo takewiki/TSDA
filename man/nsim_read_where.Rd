@@ -4,8 +4,12 @@
 \alias{nsim_read_where}
 \title{处理语句读取问题}
 \usage{
-nsim_read_where(table_name = "test2", id_var = NULL,
-  field_vars = NULL, where = " fid =1")
+nsim_read_where(
+  table_name = "test2",
+  id_var = NULL,
+  field_vars = NULL,
+  where = " fid =1"
+)
 }
 \arguments{
 \item{table_name}{表名}

@@ -4,8 +4,11 @@
 \alias{nsim_read_byField}
 \title{读取表中的字段}
 \usage{
-nsim_read_byField(table_name = "test2", field_name = "FName",
-  res_type = "vector")
+nsim_read_byField(
+  table_name = "test2",
+  field_name = "FName",
+  res_type = "vector"
+)
 }
 \arguments{
 \item{table_name}{表名}

@@ -4,8 +4,11 @@
 \alias{aggregateFieldCombiner_sqlserver}
 \title{将聚合字段列表}
 \usage{
-aggregateFieldCombiner_sqlserver(fieldName_vec = NULL,
-  fieldName_caption = NULL, aggr_fun_vec = NULL)
+aggregateFieldCombiner_sqlserver(
+  fieldName_vec = NULL,
+  fieldName_caption = NULL,
+  aggr_fun_vec = NULL
+)
 }
 \arguments{
 \item{fieldName_vec}{字段列表}

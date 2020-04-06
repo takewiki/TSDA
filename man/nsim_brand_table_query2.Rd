@@ -4,8 +4,12 @@
 \alias{nsim_brand_table_query2}
 \title{处理表查询的问题}
 \usage{
-nsim_brand_table_query2(table_name = "qalist_raw",
-  field_name = "FQuestionText", brand = "JBLH", unique = FALSE)
+nsim_brand_table_query2(
+  table_name = "qalist_raw",
+  field_name = "FQuestionText",
+  brand = "JBLH",
+  unique = FALSE
+)
 }
 \arguments{
 \item{table_name}{表名称}

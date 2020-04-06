@@ -4,8 +4,13 @@
 \alias{mysql_conn_common}
 \title{mysql 数据库连接设置}
 \usage{
-mysql_conn_common(ip = "localhost", port = 3306, user_name = "root",
-  password = "Hoolilay889@", db_name = "rdkc")
+mysql_conn_common(
+  ip = "localhost",
+  port = 3306,
+  user_name = "root",
+  password = "Hoolilay889@",
+  db_name = "rdkc"
+)
 }
 \arguments{
 \item{ip}{服务器IP地址}

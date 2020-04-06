@@ -410,6 +410,75 @@ sql_conn_common <- function(ip='115.159.201.178',
 }
 
 
+#' 添加sql 连接函数
+#'
+#' @param ip 服务器地址
+#' @param port 端口
+#' @param user_name 用户名
+#' @param password  密码
+#' @param db_name 数据库
+#'
+#' @return 返回链接
+#' @export
+#'
+#' @examples
+#' sql_conn
+sql_conn <- function(ip,
+                     port=1433,
+                     user_name='sa',
+                     password,
+                     db_name='test'){
+  res <- sql_conn_common(ip,
+                         port,
+                         user_name,
+                         password,
+                         db_name)
+  return(res)
+}
+
+#' 测试连接
+#'
+#' @return 返回值
+#' @export
+#'
+#' @examples
+#' test_conn()
+test_conn <-function()
+{
+  conn <- sql_conn_common(db_name = 'test')
+  sql <- 'select * from conn'
+  res <-sql_select(conn,sql)
+  if(nrow(res) ==1){
+    res <-res$fname
+  }else{
+    res <-'连接失败'
+  }
+  return(res)
+
+}
+
+#' 测试连接
+#'
+#' @return 返回值
+#' @export
+#'
+#' @examples
+#' test_conn()
+test_conn2 <-function()
+{
+  conn <- sql_conn(ip = '115.159.201.178',port = 1433,user_name = 'sa',password = 'Hoolilay889@',db_name = 'test')
+  sql <- 'select * from conn'
+  res <-sql_select(conn,sql)
+  if(nrow(res) ==1){
+    res <-res$fname
+  }else{
+    res <-'连接失败'
+  }
+  return(res)
+
+}
+
+
 
 
 
