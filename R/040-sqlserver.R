@@ -516,7 +516,105 @@ inner join sys.types b
 on a.system_type_id = b.system_type_id
 
 where a.object_id=object_id('",table_name,"') ")
-  print(sql)
+  #print(sql)
   res <- sql_select(conn,sql)
   return(res)
+}
+
+#' 针对列表查询
+#'
+#' @param table 表名
+#' @param fieldNames 字段清单，向量定义，不建议使用*
+#' @param conn 连接信息
+#'
+#' @return 返回值
+#' @export
+#'
+#' @examples
+#' sql_gen_select(table = 't_test')
+#' sql_gen_select(table = 'conn')
+#' sql_gen_select()
+sql_gen_select <- function(conn=conn_rds('test'),table='books',fieldNames=NULL) {
+
+
+  if(is.null(fieldNames)){
+    fieldList <-sql_fieldInfo(conn,table)
+    fieldNames <- fieldList$FFieldName
+  }
+    field_str <- paste(' ',fieldNames,' ',sep = '',collapse = ',')
+  res <- paste0('select ',field_str, ' from ',table)
+
+  return(res)
+
+
+}
+
+
+
+#' 生成insert相关语句
+#'
+#' @param conn 连接
+#' @param table 表名
+#' @param fieldNames 字段名
+#'
+#' @return 返回值
+#' @export
+#'
+#' @examples
+#' sql_gen_insert()
+sql_gen_insert <- function(conn=conn_rds('test'),table='books',fieldNames=NULL) {
+
+
+  if(is.null(fieldNames)){
+    fieldList <-sql_fieldInfo(conn,table)
+    fieldNames <- fieldList$FFieldName
+  }
+  field_str <- paste(' ',fieldNames,' ',sep = '',collapse = ',')
+  res <- paste0('insert into  ',table,' (',field_str, ') values ( ')
+
+  return(res)
+
+
+}
+
+
+#' 设置更新的标题
+#'
+#' @param table 表名
+#'
+#' @return 返回值
+#' @export
+#'
+#' @examples
+#' sql_gen_update()
+sql_gen_update <- function(table='books') {
+
+
+
+  res <- paste0('update  ',table,'  set  ')
+
+  return(res)
+
+
+}
+
+
+#' 创建sql更新语句
+#'
+#' @param table  表名
+#'
+#' @return 返回值
+#' @export
+#'
+#' @examples
+#' sql_gen_delete()
+sql_gen_delete <- function(table='books') {
+
+
+
+  res <- paste0('delete  from   ',table,'  where  ')
+
+  return(res)
+
+
 }
