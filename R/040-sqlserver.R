@@ -480,6 +480,22 @@ test_conn2 <-function()
 
 
 
+#' 获取rds数据库服务
+#'
+#' @param db_name 数据库名称
+#'
+#' @return 返回连接
+#' @export
+#'
+#' @examples
+#' conn_rds
+conn_rds <- function(db_name='test') {
+  conn <-sql_conn_common(db_name = db_name)
+  return(conn)
+
+}
+
+
 
 
 
