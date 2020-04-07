@@ -513,7 +513,7 @@ sql_fieldInfo <- function(conn=conn_rds(),table_name='books')
 {
   sql <- paste0("select a.name as FFieldName,b.name as FTypeName from sys.columns  a
 inner join sys.types b
-on a.system_type_id = b.system_type_id
+on a.system_type_id = b.user_type_id
 
 where a.object_id=object_id('",table_name,"') ")
   #print(sql)
