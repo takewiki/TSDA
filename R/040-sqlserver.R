@@ -635,6 +635,34 @@ sql_gen_delete <- function(table='books') {
 #' upload_data()
 upload_data <- function(conn,table_name,data) {
 
-  tsda::db_writeTable(conn=conn,table_name = table_name,r_object = data,append = T)
+  sql <- paste0("select * from ",table_name);
+  oldData <- sql_select(conn,sql)
+  #原有数据的记录行数
+  ncount_old <- nrow(oldData)
+  ncount_new <-nrow(data)
+
+  if (ncount_old == 0 & ncount_new > 0){
+    res <- data
+    tsda::db_writeTable(conn=conn,table_name = table_name,r_object = res,append = T)
+    status <-TRUE
+  }else if (ncount_old ==0 & ncount_new == 0 )
+  {
+    #warning("请检查数据")
+    status <- FALSE
+  }else if(ncount_old >0 & ncount_new >0){
+    data_diff <- tsdo::df_setdiff(data,oldData)
+    ncount_diff <- nrow(data_diff)
+    if(ncount_diff >0){
+      res <- data_diff
+      tsda::db_writeTable(conn=conn,table_name = table_name,r_object = res,append = T)
+      status <-TRUE
+    }else{
+      #warning("没有新数据")
+      status <- FALSE
+    }
+  }
+
+  return(status)
+
 
 }
