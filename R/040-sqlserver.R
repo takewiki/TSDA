@@ -618,3 +618,23 @@ sql_gen_delete <- function(table='books') {
 
 
 }
+
+
+
+
+#' 上传数据到数据，增量部分
+#'
+#' @param conn 数据库连接
+#' @param table_name 表名
+#' @param data 追加数据
+#'
+#' @return 返回值
+#' @export
+#'
+#' @examples
+#' upload_data()
+upload_data <- function(conn,table_name,data) {
+
+  tsda::db_writeTable(conn=conn,table_name = table_name,r_object = data,append = T)
+
+}
