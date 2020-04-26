@@ -666,3 +666,17 @@ upload_data <- function(conn,table_name,data) {
 
 
 }
+
+#' 获取连接
+#'
+#' @return 返回连接
+#' @export
+#'
+#' @examples
+#' conn_rds_nsic()
+conn_rds_nsic <- function() {
+  res <- conn_rds('nsic')
+  return(res)
+
+}
+
