@@ -1,6 +1,7 @@
 #' 针对python环境进行设置
 #'
 #' @return 返回
+#' @import reticulate
 #' @export
 #'
 #' @examples
