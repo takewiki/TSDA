@@ -38,6 +38,7 @@ Collate:
     '063-mongodb.R'
     'addrPhoneExtractor.R'
     'excel.R'
+    'python.R'
     'readData.R'
     'writeData.R'
 Suggests: 

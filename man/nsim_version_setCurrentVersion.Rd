@@ -4,8 +4,7 @@
 \alias{nsim_version_setCurrentVersion}
 \title{设置品牌模块的版本}
 \usage{
-nsim_version_setCurrentVersion(brand = "JBLH", module = "nsbl",
-  version)
+nsim_version_setCurrentVersion(brand = "JBLH", module = "nsbl", version)
 }
 \arguments{
 \item{brand}{品牌}

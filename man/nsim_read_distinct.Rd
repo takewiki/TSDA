@@ -4,8 +4,13 @@
 \alias{nsim_read_distinct}
 \title{处理查询的唯一性问题}
 \usage{
-nsim_read_distinct(table_name = "test2", id_var = NULL,
-  field_vars = NULL, where = " fid =1", unique = FALSE)
+nsim_read_distinct(
+  table_name = "test2",
+  id_var = NULL,
+  field_vars = NULL,
+  where = " fid =1",
+  unique = FALSE
+)
 }
 \arguments{
 \item{table_name}{表名}

@@ -4,9 +4,10 @@
 \alias{sqlserver_jdbc_driver}
 \title{定义sqlserver_jdbc_driver入口实例化函数}
 \usage{
-
-  sqlserver_jdbc_driver(driver_location = "/opt/sqljdbc_7.2/enu/mssql-jdbc-7.2.2.jre8.jar",
-  os_type = "linux")
+sqlserver_jdbc_driver(
+  driver_location = "/opt/sqljdbc_7.2/enu/mssql-jdbc-7.2.2.jre8.jar",
+  os_type = "linux"
+)
 }
 \arguments{
 \item{driver_location}{驱动存放位置}

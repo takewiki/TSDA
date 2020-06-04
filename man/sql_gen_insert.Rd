@@ -4,8 +4,7 @@
 \alias{sql_gen_insert}
 \title{生成insert相关语句}
 \usage{
-sql_gen_insert(conn = conn_rds("test"), table = "books",
-  fieldNames = NULL)
+sql_gen_insert(conn = conn_rds("test"), table = "books", fieldNames = NULL)
 }
 \arguments{
 \item{conn}{连接}

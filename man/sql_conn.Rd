@@ -4,8 +4,7 @@
 \alias{sql_conn}
 \title{添加sql 连接函数}
 \usage{
-sql_conn(ip, port = 1433, user_name = "sa", password,
-  db_name = "test")
+sql_conn(ip, port = 1433, user_name = "sa", password, db_name = "test")
 }
 \arguments{
 \item{ip}{服务器地址}

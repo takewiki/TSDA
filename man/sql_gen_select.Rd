@@ -4,8 +4,7 @@
 \alias{sql_gen_select}
 \title{针对列表查询}
 \usage{
-sql_gen_select(conn = conn_rds("test"), table = "books",
-  fieldNames = NULL)
+sql_gen_select(conn = conn_rds("test"), table = "books", fieldNames = NULL)
 }
 \arguments{
 \item{conn}{连接信息}
