@@ -2,7 +2,7 @@
 % Please edit documentation in R/python.R
 \name{set_py}
 \alias{set_py}
-\title{针对python环境进行设置}
+\title{针对python环境进行设置2}
 \usage{
 set_py()
 }
@@ -10,7 +10,7 @@ set_py()
 返回
 }
 \description{
-针对python环境进行设置
+针对python环境进行设置2
 }
 \examples{
 set_py()

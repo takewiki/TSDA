@@ -1,4 +1,4 @@
-#' 针对python环境进行设置
+#' 针对python环境进行设置2
 #'
 #' @return 返回
 #' @import reticulate
