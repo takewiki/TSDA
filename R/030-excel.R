@@ -136,7 +136,7 @@ writeDataToExcel <- function (data,fileName,sheetName)
 
 
 
-#' 读取excel页答名称
+#' 读取excel页签名称
 #'
 #' @param file 文件
 #'

@@ -2,7 +2,7 @@
 % Please edit documentation in R/030-excel.R
 \name{excel_getSheetNames}
 \alias{excel_getSheetNames}
-\title{读取excel页答名称}
+\title{读取excel页签名称}
 \usage{
 excel_getSheetNames(file)
 }
@@ -13,7 +13,7 @@ excel_getSheetNames(file)
 返回值
 }
 \description{
-读取excel页答名称
+读取excel页签名称
 }
 \examples{
 execl_getSheetNames()
