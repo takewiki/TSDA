@@ -132,3 +132,21 @@ writeDataToExcel <- function (data,fileName,sheetName)
   write.xlsx(x = data,file = fileName,sheetName=sheetName);
 
 }
+
+
+
+
+#' 读取excel页答名称
+#'
+#' @param file 文件
+#'
+#' @return 返回值
+#' @export
+#'
+#' @examples
+#' execl_getSheetNames()
+excel_getSheetNames <- function(file) {
+  res <-readxl::excel_sheets(file)
+  return(res)
+
+}
