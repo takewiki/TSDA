@@ -1,7 +1,7 @@
 Package: tsda
 Type: Package
 Title: data access and driver interface in takewiki solutions
-Version: 3.2.1
+Version: 3.2.2
 Author: hulilei
 Maintainer: hulilei <hulilei@takewiki.com.cn>
 Description: data access operations and data driver for ODBC
@@ -37,6 +37,7 @@ Collate:
     '062-hbase.R'
     '063-mongodb.R'
     'addrPhoneExtractor.R'
+    'conn.R'
     'excel.R'
     'python.R'
     'readData.R'
